@@ -26,10 +26,9 @@ $tasks = $repo->getAll();
         <section id="tasks">
             <h2>Vos tâches</h2>
             <?php
-            foreach ($tasks as $task) {
-                render($task);
-            }
-
+                foreach ($tasks as $task) {
+                    render($task);
+                }
             ?>
         </section>
 

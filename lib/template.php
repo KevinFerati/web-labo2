@@ -11,7 +11,7 @@ function render(Task $task) {
     };
 
     echo <<<EOT
-    <article hx-trigger='change delay:500ms, keyup delay:500ms' hx-patch='/tasks.php'>
+    <article hx-include="this" hx-trigger='change, keyup delay:500ms' hx-patch='/tasks.php'>
         <div class='form-group'>
             <label for='description'>Description</label>
             <textarea name='description'>{$task->getDescription()}</textarea>
@@ -24,8 +24,10 @@ function render(Task $task) {
                 {$option($task->getStatus(), TaskStatus::ToDo, "À faire")}
             </select>
         </div>
-        <button type="button" class="btn btn-danger" hx-include="next input[type='hidden']" hx-delete="/tasks.php" hx-target="closest article" hx-swap="outerHTML" >Supprimer</button>
+        <button type="button" class="btn btn-danger" hx-indicator="closest article" hx-include="next input[type='hidden']" hx-delete="/tasks.php" hx-target="closest article" hx-swap="outerHTML" >Supprimer</button>
         <input type='hidden' name='id' value='{$task->getId()}' />
+        
+        <img class="htmx-indicator" src="https://htmx.org/img/bars.svg"/>
     </article>
     EOT;
 }

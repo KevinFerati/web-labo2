@@ -5,10 +5,19 @@ class TaskRepository {
     private PDO $pdo;
     private PDOStatement $insertStmt;
     private PDOStatement $deleteStmt;
+    private PDOStatement $updateStmt;
     public function __construct() {
         $this->pdo = new PDO('mysql:host=127.0.0.1;port=3306;dbname=tasks', 'mariadb', 'mariadb');
         $this->insertStmt = $this->pdo->prepare("INSERT INTO tasks (description, status) VALUES(:description, :status)");
         $this->deleteStmt = $this->pdo->prepare("DELETE FROM tasks WHERE id = :id");
+        $this->updateStmt = $this->pdo->prepare("UPDATE tasks SET description = :description, status = :status WHERE id = :id");
+    }
+
+    public function update(Task $task) {
+        $this->updateStmt->bindValue(":description", $task->getDescription(), PDO::PARAM_STR);
+        $this->updateStmt->bindValue(":status", $task->getStatus()->value, PDO::PARAM_STR);
+        $this->updateStmt->bindValue(":id", $task->getId(), PDO::PARAM_INT);
+        $this->updateStmt->execute();   
     }
 
     public function delete(int $id) {
