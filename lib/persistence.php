@@ -4,9 +4,16 @@ require_once('task.php');
 class TaskRepository {
     private PDO $pdo;
     private PDOStatement $insertStmt;
+    private PDOStatement $deleteStmt;
     public function __construct() {
         $this->pdo = new PDO('mysql:host=127.0.0.1;port=3306;dbname=tasks', 'mariadb', 'mariadb');
         $this->insertStmt = $this->pdo->prepare("INSERT INTO tasks (description, status) VALUES(:description, :status)");
+        $this->deleteStmt = $this->pdo->prepare("DELETE FROM tasks WHERE id = :id");
+    }
+
+    public function delete(int $id) {
+        $this->deleteStmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $this->deleteStmt->execute();
     }
 
     public function create(Task $task): Task {

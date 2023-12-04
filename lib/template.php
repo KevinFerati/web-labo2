@@ -24,7 +24,19 @@ function render(Task $task) {
                 {$option($task->getStatus(), TaskStatus::ToDo, "À faire")}
             </select>
         </div>
+        <button type="button" class="btn btn-danger" hx-include="next input[type='hidden']" hx-delete="/tasks.php" hx-target="closest article" hx-swap="outerHTML" >Supprimer</button>
         <input type='hidden' name='id' value='{$task->getId()}' />
     </article>
     EOT;
+}
+
+enum MessageStatus: String {
+    case Success = "success";
+    case Error = "danger";
+}
+
+function renderStatusMessage(string $message, MessageStatus $status) {
+    echo <<<EOT
+    <div id="message" hx-swap-oob="true" class="alert alert-{$status->value}">$message</div>
+EOT;
 }

@@ -22,7 +22,7 @@ $tasks = $repo->getAll();
 <body>
     <main>
         <h1>Yet Another Todo-list App</h1>
-
+        <div id="message"></div>
         <section id="tasks">
             <h2>Vos tâches</h2>
             <?php
