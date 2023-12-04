@@ -1,12 +1,12 @@
 <?php 
-require_once('./task.php');
+require_once('task.php');
 
 function render(Task $task) {
 
     $option = function (TaskStatus $current, TaskStatus $status, string $name) {
         $selected = $status == $current ? "selected='selected'" : "";
         return <<<EOT
-        <option value='$status'>$name</option>
+        <option value='$status->value' $selected>$name</option>
     EOT;
     };
 

@@ -2,23 +2,29 @@
 require_once('task.php');
 
 class TaskRepository {
-    private Pdo $pdo;
-    
+    private PDO $pdo;
+    private PDOStatement $insertStmt;
     public function __construct() {
-        $pdo = new PDO('mysql:host=127.0.0.1;port=3306;dbname=tasks', 'mariadb', 'mariadb');
+        $this->pdo = new PDO('mysql:host=127.0.0.1;port=3306;dbname=tasks', 'mariadb', 'mariadb');
+        $this->insertStmt = $this->pdo->prepare("INSERT INTO tasks (description, status) VALUES(:description, :status)");
     }
 
     public function create(Task $task): Task {
-            return new Task(0, "", TaskStatus::Done);
+            $this->insertStmt->bindValue(":description", $task->getDescription(), PDO::PARAM_STR);
+            $this->insertStmt->bindValue(":status", $task->getStatus()->value, PDO::PARAM_STR);
+            $this->insertStmt->execute();
+            $lastId = $this->pdo->lastInsertId();
+            return new Task($lastId, $task->getDescription(), $task->getStatus()->value);
     }
 
     /**
      * @return Task[]
      */
     public function getAll(): array {
-        return array(new Task(0, "", TaskStatus::Done));
+        $stmt = $this->pdo->query("SELECT * FROM tasks");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map(fn($row): Task => new Task(...$row), $rows);
     }
-
 }
 
 
