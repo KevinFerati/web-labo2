@@ -25,43 +25,73 @@ $tasks = $repo->getAll();
             }
         });
     </script>
+    <style>
+        #tasks {
+            display: grid;
+            grid-gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+            grid-auto-rows: 1fr;
+            & > *:first-child {
+                grid-row: 1 / 1;
+                grid-column: 1 / 1;
+            }
+
+            &::before {
+                content: '';
+            width: 0;
+            padding-bottom: 100%;
+            grid-row: 1 / 1;
+            grid-column: 1 / 1;
+            }
+        }
+
+        article {
+            border: 1px solid lightgrey;
+            padding: 0.6rem;
+        }
+
+    </style>
 </head>
 
 <body>
     <main>
         <h1>Yet Another Todo-list App</h1>
         <div id="message"></div>
-        <section id="tasks">
+        <section>
             <h2>Vos tâches</h2>
-            <?php
+            <div id="tasks">
+                <?php
                 foreach ($tasks as $task) {
                     render($task);
                 }
-            ?>
+                ?>
+            </div>
+
         </section>
 
         <section>
             <h2>Ajouter une tâche</h2>
             <form hx-target="#tasks" hx-swap="beforeend" hx-post="/tasks.php">
-                    <div class='form-group'>
-                        <label for='description'>Description</label>
-                        <textarea name='description' required></textarea>
-                    </div>
-                    <div class='form-group'>
-                        <label for='status'>Status</label>
-                        <select name='status'>
-                            <option value='Done'>Terminé</option>
-                            <option value='InProgress'>En cours</option>
-                            <option value='ToDo'>À faire</option>
-                        </select> 
-                    </div>
-                    <?php
-                    renderDates(null, null);
-                    ?>
-                    <input type='submit' value='Ajouter' />
+                <div class='form-group'>
+                    <label for='description'>Description</label>
+                    <textarea name='description' required></textarea>
+                </div>
+                <div class='form-group'>
+                    <label for='status'>Status</label>
+                    <select name='status'>
+                        <option value='Done'>Terminé</option>
+                        <option value='InProgress'>En cours</option>
+                        <option value='ToDo'>À faire</option>
+                    </select>
+                </div>
+                <?php
+                renderDates(null, null);
+                ?>
+                <input type='submit' value='Ajouter' />
             </form>
         </section>
 
     </main>
 </body>
+
 </html>
