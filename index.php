@@ -17,6 +17,14 @@ $tasks = $repo->getAll();
 
     <title>HTML 5 Boilerplate</title>
     <link rel="stylesheet" href="style.css">
+    <script type="application/javascript">
+        // enable swap behavior on 400
+        htmx.on("htmx:beforeSwap", (e) => {
+            if (e.detail.xhr.status == 400) {
+                e.detail.shouldSwap = true;
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -37,7 +45,7 @@ $tasks = $repo->getAll();
             <form hx-target="#tasks" hx-swap="beforeend" hx-post="/tasks.php">
                     <div class='form-group'>
                         <label for='description'>Description</label>
-                        <textarea name='description'></textarea>
+                        <textarea name='description' required></textarea>
                     </div>
                     <div class='form-group'>
                         <label for='status'>Status</label>
@@ -45,8 +53,11 @@ $tasks = $repo->getAll();
                             <option value='Done'>Terminé</option>
                             <option value='InProgress'>En cours</option>
                             <option value='ToDo'>À faire</option>
-                        </select>
+                        </select> 
                     </div>
+                    <?php
+                    renderDates(null, null);
+                    ?>
                     <input type='submit' value='Ajouter' />
             </form>
         </section>

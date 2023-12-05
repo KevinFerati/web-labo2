@@ -6,26 +6,15 @@ enum TaskStatus: String {
 }
 
 class Task {
-    private TaskStatus $status;
+    public readonly TaskStatus $status;
 
     public function __construct(
-        private int $id, 
-        private string $description, 
+        public readonly int $id, 
+        public readonly string $description,
+        public readonly ?string $dueDate,
+        public readonly ?string $beginDate,
         string $status) {
         $this->status = TaskStatus::from($status);
     }
-
-    public function getDescription(): string {
-        return $this->description;
-    }
-
-    public function getStatus(): TaskStatus {
-        return $this->status;
-    }
-
-    public function getId(): int {
-        return $this->id;
-    }
-
 }
 
