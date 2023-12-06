@@ -14,7 +14,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 }
 
-// Try creating a new task
+// On post, try creating a task from the body
 function handlePost() {
     
     $repo = new TaskRepository(); 
@@ -35,7 +35,7 @@ function handlePost() {
     }
 }   
 
-
+// On delete, try delete the task with the ID given in the body
 function handleDelete() {
     parse_str(file_get_contents("php://input"), $body);
     try {
@@ -53,6 +53,7 @@ function handleDelete() {
     }
 }
 
+// On patch, try updating the task that has the given ID
 function handlePatch() {
     parse_str(file_get_contents("php://input"), $body);
     try {
@@ -76,7 +77,7 @@ function handlePatch() {
  */
 function tryGetTask(array $body): Task|string {
 
-    $keys = ["description", "status", "dueDate", "beginDate"];
+    $keys = ["description", "status"];
     foreach ($keys as $key) {
         if (!array_key_exists($key, $body)) {
             return "Informations manquantes : " . $key;

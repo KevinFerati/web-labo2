@@ -1,4 +1,7 @@
 <?php 
+/**
+ * Représente les états possibles d'une tâche. Les valeurs sont celles de l'ENUM de la DB
+ */
 enum TaskStatus: String {
     case ToDo = 'ToDo';
     case Done = 'Done';

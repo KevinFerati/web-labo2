@@ -1,6 +1,9 @@
 <?php
 require_once('task.php');
 
+/**
+ * Offre des opérations CRUD sur la db
+ */
 class TaskRepository
 {
     private readonly PDO $pdo;
@@ -15,7 +18,7 @@ class TaskRepository
         $this->deleteStmt = $this->pdo->prepare("DELETE FROM tasks WHERE id = :id");
         $this->updateStmt = $this->pdo->prepare("UPDATE tasks SET description = :description, status = :status, dueDate = :dueDate, beginDate = :beginDate WHERE id = :id");
     }
-
+    
     public function update(Task $task)
     {
         $this->bindModifiyingStmt($this->updateStmt, $task);

@@ -54,43 +54,37 @@ $tasks = $repo->getAll();
 </head>
 
 <body>
-    <main>
+    <main class="container">
         <h1>Yet Another Todo-list App</h1>
         <div id="message"></div>
-        <section>
-            <h2>Vos tâches</h2>
-            <div id="tasks">
-                <?php
-                foreach ($tasks as $task) {
-                    render($task);
-                }
-                ?>
-            </div>
+        <section class="row">
+            <!-- List of tasks -->
+            <section class="col-8">
+                <h2>Vos tâches</h2>
+                <div id="tasks">
+                    <?php
+                    foreach ($tasks as $task) {
+                        render($task);
+                    }
+                    ?>
+                </div>
+
+            </section>
+            
+            <!-- form to add the tasks -->
+            <section class="col-4 border-start">
+                <h2>Ajouter une tâche</h2>
+                <form hx-target="#tasks" hx-swap="beforeend" hx-indicator="#form-indicator" hx-post="/tasks.php">
+                <?php 
+                    renderMain("", TaskStatus::Done);
+                    renderDates(null, null);
+                    ?>
+                    <input class="col-9 btn btn-primary " type='submit' value='Ajouter' />
+                    <img id="form-indicator" class="offset-1 col-1 htmx-indicator" src="https://htmx.org/img/bars.svg"/>
+                </form>
+            </section>
 
         </section>
-
-        <section>
-            <h2>Ajouter une tâche</h2>
-            <form hx-target="#tasks" hx-swap="beforeend" hx-post="/tasks.php">
-                <div class='form-group'>
-                    <label for='description'>Description</label>
-                    <textarea name='description' required></textarea>
-                </div>
-                <div class='form-group'>
-                    <label for='status'>Status</label>
-                    <select name='status'>
-                        <option value='Done'>Terminé</option>
-                        <option value='InProgress'>En cours</option>
-                        <option value='ToDo'>À faire</option>
-                    </select>
-                </div>
-                <?php
-                renderDates(null, null);
-                ?>
-                <input type='submit' value='Ajouter' />
-            </form>
-        </section>
-
     </main>
 </body>
 
